@@ -1,0 +1,113 @@
+@charset "UTF-8";
+/* ==========================================================================
+ * Layout
+ * ========================================================================== */
+
+.container{
+	overflow: hidden;
+	position: relative;
+
+	&__section{
+		
+	}
+}
+
+/* ==========================================================================
+ * section
+ * ========================================================================== */
+
+.section{
+	padding: 80px 0 80px;
+
+	&__wrap{
+		@include clearfix;
+		max-width: 1000px;
+		padding: 0 10px;
+		margin: auto;
+	}
+
+	&__title{
+		text-align: center;
+		margin: 0 0 40px;
+		font-weight: 700;
+		font-size: 36px;
+		line-height: (50/36);
+	}
+
+	&__text{
+		margin: 0 0 30px;		
+	}
+}
+
+
+/* ==========================================================================
+ * app
+ * ========================================================================== */
+
+.app{
+
+	&__loader{
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		z-index: 500;
+	}
+
+	&__error{
+		position: fixed;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		z-index: 550;
+	}
+
+}
+
+/* ==========================================================================
+ * error-message
+ * ========================================================================== */
+
+.error-message{
+	padding: 10px;
+	background: #ff7f7f;
+}
+ 
+
+/* ==========================================================================
+ * loader
+ * ========================================================================== */
+
+.loader{
+	background: rgba(255,255,255,.5);	
+	text-align: center;
+	opacity: 0;
+	visibility: hidden;
+	
+	transition: all .2s;
+
+	display: flex;
+
+	align-items: center;
+	justify-content: center;
+	
+	&__content{
+		width: 40px;
+		height: 40px;
+		display: inline-block;
+		animation: spin .6s infinite linear;
+		text-indent: -9999px;
+		content: '';
+	}
+
+	&--visible{
+		opacity: 1;
+		visibility: visible;
+	}
+}
+
+@keyframes spin {
+    from {transform:rotate(0deg);}
+    to {transform:rotate(360deg);}
+}
