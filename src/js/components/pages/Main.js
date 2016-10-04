@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import User from '../../components/user/User';
+import Fabric from '../../components/fabric/Fabric';
 
 //import * as asyncActions from '../../actions/async';
 //import * as pageActions from '../../actions/page';
@@ -13,6 +14,7 @@ class Main extends React.Component {
 		return(
 			<div className="section__wrap app__wrap">
 				<User mixClass="app__user" />
+				<Fabric mixClass="app__user" />
 			</div>
 		);
 	}
