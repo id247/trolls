@@ -286,14 +286,16 @@ class Fabric extends React.Component {
 				</div>	
 				<div style={imagesPlaceholderStyle}>
 
-					<img onClick={this._addSVG.bind(this)} crossOrigin="Anonymous" width="100" src="http://ad.csdnevnik.ru/special/staging/comix/images/templates/eyes/1.svg" alt=""/>
-					<img onClick={this._addSVG.bind(this)} crossOrigin="Anonymous" width="100" src="http://ad.csdnevnik.ru/special/staging/comix/images/templates/eyes/2.svg" alt=""/>
+					<img onClick={this._addSVG.bind(this)} crossOrigin="Anonymous" width="100" src="https://ad.csdnevnik.ru/special/staging/comix/images/templates/eyes/1.svg" alt=""/>
+					<img onClick={this._addSVG.bind(this)} crossOrigin="Anonymous" width="100" src="https://ad.csdnevnik.ru/special/staging/comix/images/templates/eyes/2.svg" alt=""/>
 					<br/>
-					<img onClick={this._addSVG.bind(this)} crossOrigin="Anonymous" width="100" src="http://ad.csdnevnik.ru/special/staging/comix/images/templates/noses/1.svg" alt=""/>
-					<img onClick={this._addSVG.bind(this)} crossOrigin="Anonymous" width="100" src="http://ad.csdnevnik.ru/special/staging/comix/images/templates/noses/2.svg" alt=""/>
+					<img onClick={this._addSVG.bind(this)} crossOrigin="Anonymous" width="100" src="https://ad.csdnevnik.ru/special/staging/comix/images/templates/noses/1.svg" alt=""/>
+					<img onClick={this._addSVG.bind(this)} crossOrigin="Anonymous" width="100" src="https://ad.csdnevnik.ru/special/staging/comix/images/templates/noses/2.svg" alt=""/>
 					<br/>
-					<img onClick={this._addSVG.bind(this)} crossOrigin="Anonymous" width="100" src="http://ad.csdnevnik.ru/special/staging/comix/images/templates/mouths/1.svg" alt=""/>
-					<img onClick={this._addSVG.bind(this)} crossOrigin="Anonymous" width="100" src="http://ad.csdnevnik.ru/special/staging/comix/images/templates/mouths/2.svg" alt=""/>
+					<img onClick={this._addSVG.bind(this)} crossOrigin="Anonymous" width="100" src="https://ad.csdnevnik.ru/special/staging/comix/images/templates/mouths/1.svg" alt=""/>
+					<img onClick={this._addSVG.bind(this)} crossOrigin="Anonymous" width="100" src="https://ad.csdnevnik.ru/special/staging/comix/images/templates/mouths/2.svg" alt=""/>
+					
+					<img onClick={this._addImage.bind(this)} crossOrigin="Anonymous" width="100" src="https://ad.csdnevnik.ru/special/staging/comix/images/cat.jpeg" alt=""/>
 				</div>	
 				<div style={colorPlaceholderStyle}>
 					Выбор цвета
