@@ -2,37 +2,43 @@
  * Global
  * ========================================================================== */
 
-html{
-	//min-width: 1020px;
+.document{
+	min-width: 1000px;
 	-webkit-font-smoothing: antialiased;
 	text-size-adjust: none;
 	font-size: 16px;
 	line-height: 1.2;
 	font-family: $mainFontFamily;
 	color: $text;
-}
-
-a{
-	color: inherit;
-	text-decoration: none;
-	&:hover{
-		text-decoration: none;
+	
+	background: #0a1111 url(../images/bg/home.jpg) 50% 0 no-repeat;
+	background-size: cover;
+	
+	&__body{
+		
 	}
 }
 
+
 .link{
+	color: inherit;
+	text-decoration: none;
 	border-bottom: 1px solid;
 	transition: all .3s;
 	&:hover{
 		border-color: transparent;
+		text-decoration: none;
 	}
 }
 
 .inverselink{
+	color: inherit;
+	text-decoration: none;
 	border-bottom: 1px solid transparent;
 	transition: all .3s;
 	&:hover{
 		border-color: currentColor;
+		text-decoration: none;
 	}	
 }
 

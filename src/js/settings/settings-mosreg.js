@@ -12,6 +12,7 @@ export const APIoptions = {
 }
 
 export const PromoOptions = {	
+	cdn: 'https://ad.csdnevnik.ru/special/staging/trolls/',
 	url: 'http://localhost:9000',
 	server: 'https://staging.dnevnik.ru',
 }

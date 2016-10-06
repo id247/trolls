@@ -38,6 +38,17 @@
 		}
 	}
 
+	&--blue{
+		background: $blue;
+		color: #fff;
+		&:hover{
+			background: lighten($blue, 5%);
+		}
+		&:active{
+			background: darken($blue, 5%);
+		}
+	}
+
 	&--m{
 		border-radius: 8px;
 		font-weight: 700;
@@ -48,8 +59,8 @@
 	&--l{
 		border-radius: 8px;
 		font-weight: 700;
-		font-size: 15px;
-		padding: 10px 20px 10px;
+		font-size: 24px;
+		padding: 12px 30px 12px;
 	}
 
 	&--block{

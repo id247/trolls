@@ -36,6 +36,7 @@ export const APIoptions = {
 }
 
 export const PromoOptions = {	
+	cdn: 'https://ad.csdnevnik.ru/special/staging/trolls/',
 	url: 'https://ad.dnenvik.ru/promo/hidden-forum',
 	server: 'https://dnevnik.ru',
 }

@@ -6,9 +6,68 @@
 .container{
 	overflow: hidden;
 	position: relative;
+	padding: 20px 0 40px;
+	min-height: 100vh;
 
-	&__section{
-		
+	&__logo-placeholder{
+		text-align: center;
+		margin: 0 0 30px;
+	}
+
+	&__logo{
+		&:before{
+			content: '';
+			display: block;
+			margin: 0 auto;
+			font-weight: 700;
+			@include sprite($trolls);		
+		}
+		color: #fff;
+		font-size: 23px;
+		text-transform: uppercase;
+		font-family: $futura;
+	}
+
+	&__age{
+		position: absolute;
+		top: 5px;
+		right: 5px;
+		@include sprite($age);
+	}
+
+	&__copys{
+		position: absolute;
+		bottom: 5px;
+		left: 5px;
+	}
+}
+
+/* ==========================================================================
+ * copys
+ * ========================================================================== */
+
+.copys{
+
+	&__list{
+		margin: 0 0 -15px -15px;
+	}
+
+	&__item{
+		display: inline-block;
+		vertical-align: middle;
+		margin: 0 0 15px 15px;
+
+		&--1{
+			@include sprite($copy-1);
+		}
+
+		&--2{
+			@include sprite($copy-2);
+		}
+
+		&--3{
+			@include sprite($copy-3);
+		}
 	}
 }
 
@@ -32,6 +91,7 @@
 		font-weight: 700;
 		font-size: 36px;
 		line-height: (50/36);
+		font-family: $futura;
 	}
 
 	&__text{
@@ -63,6 +123,222 @@
 		z-index: 550;
 	}
 
+	&__redactor{
+		margin: 0 auto;
+	}
+
+}
+
+/* ==========================================================================
+ * redactor
+ * ========================================================================== */
+
+.redactor{
+
+	&__content{
+		width: 860px;
+		margin: auto;
+		position: relative;	
+	}
+
+	&__sidebar{
+		position: absolute;
+		top: 10px;
+		left: 100%;
+		width: 120px;
+	}
+
+	&__work-area{
+		background: #fff;
+		padding: 15px;
+		border-radius: 7px;	
+	}
+
+	&__masks{
+		position: fixed;
+		top: 0;
+		right: 0;
+		bottom: 0;
+	}
+}
+
+.redactor-work-area{
+	position: relative;
+
+	&__content{
+		height: 450px;
+		position: relative;
+		
+		&--upload{
+			color: #606060;
+			border: 1px dashed #ccc;
+			border-radius: 7px;
+			text-align: center;
+			padding: 120px 20px 20px;
+		}
+		
+		&--save{
+			background: rgba(255,255,255,.5);
+			position: absolute;
+			top: 15px;
+			left: 15px;
+			right: 15px;
+		}
+	}
+
+	&__title{
+		font-size: 30px;
+		font-weight: 700;
+		margin: 0 0 20px;
+		font-family: $futura;
+
+	}
+
+	&__text{
+		font-size: 18px;
+		margin: 0 0 40px;		
+	}
+
+	&__file{
+		position: absolute;
+		left: -9999px;
+	}
+
+	&__button{
+		font-family: $futura;
+	}
+
+	&__canvas{
+
+	}
+
+	&__delete{
+		background-color: transparent;
+		position: absolute;
+		top: 5px;
+		right: 5px;
+		@include sprite($close);
+	}
+}
+
+.redactor-sidebar{
+
+	&__list{
+		
+	}
+
+	&__item{
+		margin: 0 0 6px;
+	}
+
+	&__button{
+		background: #e8e8e8;
+		text-align: center;
+		width: 116px;
+		padding: 20px 10px;
+		font-size: 16px;
+
+		border-radius: 0 7px 7px 0;
+
+		&:before{
+			content: '';
+			display: block;
+			margin: 0 auto 20px;
+		}
+
+		&:hover,
+		&--active{
+			background: #fff;
+			width: 126px;
+		}
+
+		&--hair{
+			&:before{
+				@include sprite($hair);
+			}
+		}
+
+		&--face{
+			&:before{
+				@include sprite($face);
+			}
+		}
+
+		&--noses{
+			&:before{
+				@include sprite($noses);
+			}
+		}
+	}
+}
+
+/* ==========================================================================
+ * redactor-save
+ * ========================================================================== */
+
+.redactor-save{
+	text-align: center;
+	padding: 200px 0 0;
+
+	&__buttons{
+		
+	}
+
+	&__button-placeholder{
+		display: inline-block;
+		vertical-align: middle;
+		margin: 0 10px 0;
+	}
+}
+
+/* ==========================================================================
+ * redactor-masks
+ * ========================================================================== */
+
+.redactor-masks{
+	background: rgba(255,255,255,.9);
+	width: 150px;
+
+	&__content{
+		padding: 50px 10px 20px;		
+		position: relative;	
+		text-align: center;
+		overflow: auto;
+	}
+
+	&__close{
+		background: transparent;
+		position: absolute;
+		top: 5px;
+		right: 5px;
+		@include sprite($close);
+	}
+
+	&__title{
+		
+	}
+
+	&__list{
+		
+	}
+
+	&__item{
+		margin: 0 0 20px;
+		height: 100px;
+		line-height: 100px;
+		text-align: center;
+		&:last-child{
+			margin-bottom: 0;
+		}
+	}
+
+	&__image{
+		cursor: pointer;
+		max-width: 100%;
+		max-height: 100%;
+		height: auto;
+		width: auto;
+	}
 }
 
 /* ==========================================================================

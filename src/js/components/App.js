@@ -7,7 +7,7 @@ class App extends React.Component {
 
 	componentWillMount(){
 		const { props } = this;
-		props.init();
+		//props.init();
 	}
 
 	render(){
