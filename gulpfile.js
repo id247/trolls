@@ -29,7 +29,9 @@ gulp.task('sass', function () {
 
 	return gulp.src('src/sass/style.scss')
 		.pipe($.if(devMode !== 'production', $.sourcemaps.init())) 
-		.pipe($.sass({outputStyle: 'expanded'})) 
+		.pipe($.sass({
+			outputStyle: 'expanded',
+		})) 
 		.on('error', $.notify.onError())
 		.pipe($.autoprefixer({
 			browsers: ['> 1%'],

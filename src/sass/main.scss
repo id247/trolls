@@ -40,6 +40,12 @@
 		bottom: 5px;
 		left: 5px;
 	}
+
+	&__likely{
+		position: absolute;
+		bottom: 7px;
+		right: 10px;
+	}
 }
 
 /* ==========================================================================
@@ -663,11 +669,16 @@
 	}
 	
 	&__item{
-		margin: 0 0 50px;
+		margin: 0 0 25px;
+		border-bottom: 1px dashed #ccc;
+		&:last-child{
+			border-bottom: 0;
+		}
 	}
 }
 
 .gallery-item{
+	padding: 0 0 25px;
 
 	&__top{
 		@include clearfix;

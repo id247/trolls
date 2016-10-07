@@ -1,5 +1,6 @@
 'use strict';
 
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 
@@ -20,4 +21,6 @@ ReactDOM.render(
 );
 
 
+import likely from 'ilyabirman-likely';
 
+likely.initiate();
