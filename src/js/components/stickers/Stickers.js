@@ -124,15 +124,14 @@ class Stickers extends React.Component {
 	render(){
 		const { props, state } = this;
 		return(
-			<div className="stickers">
+			<div className="page stickers">
 
 
 				{
 					state.showFriends
 					?
 					(
-						<div className="stickers__content">
-
+						<div className="page__content stickers__content">
 
 							<div className="stickers__people people">
 
@@ -218,11 +217,11 @@ class Stickers extends React.Component {
 					)
 					:
 					(
-						<div className="stickers__content">
+						<div className="page__content stickers__content">
 
-							<h1 className="stickers__title">
+							<h2 className="page__title stickers__title">
 								ОТПРАВЬ СТИКЕР ДРУГУ
-							</h1>
+							</h2>
 
 							<ul className="stickers__list">
 

@@ -8,12 +8,15 @@ import Login 		from '../components/pages/Login';
 import App 			from '../components/App';
 import Redactor 	from '../components/redactor/Redactor';
 import Stickers 	from '../components/stickers/Stickers';
+import Gallery 		from '../components/gallery/Gallery';
 
 const routes = (
 	<Router history={hashHistory}>
 		<Route path="/" component={App}>
 			<IndexRoute component={Redactor} />
-			<Route path="/stickers" component={Stickers} />
+			<Route path="stickers" component={Stickers} />
+			<Route path="gallery(/:galleryPage)" component={Gallery} />
+			<Route path="gallery/2" component={Gallery} />
 		</Route>
 		{/*<Route path="/login" component={Login} /> */}
 	</Router>

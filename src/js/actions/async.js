@@ -3,12 +3,15 @@ import OAuth from '../api/hello';
 
 import { PromoOptions } from 'appSettings';
 
-import * as visual from '../helpers/visual.js';
+import { HTMLencode, HTMLdecode } from '../helpers/escape';
+
+//import * as visual from '../helpers/visual.js';
 
 import * as loadingActions 		from '../actions/loading';
 import * as errorActions 		from '../actions/error';
 import * as userActions 		from '../actions/user';
 import * as pageActions 		from '../actions/page';
+import * as galleryActions 		from '../actions/gallery';
 
 
 //error handler
@@ -132,6 +135,262 @@ export function sendSticker(stickerId, friendId) {
 	}
 }
 
+
+//gallery
+
+
+
+export function getPhotos(pageNumber = 1) {
+
+
+	return (dispatch, getState) => {
+		dispatch(loadingActions.loadingShow());	
+
+		const label = PromoOptions.galeryLabel;
+
+		let photos;
+		let counters;
+		let firstPageCounters;
+
+		const countersPageSize = 100;
+
+		return API.getKeysFromDBdesc(label, pageNumber, PromoOptions.pageSize)
+		.then( res => {
+			photos = res;
+			return API.getCoutersFromDBdesc(label, 1, countersPageSize); //fist request to get counters total count
+		})
+		.then( res => {			
+			firstPageCounters = res.Counters;
+
+			if (res.Paging.count < countersPageSize){
+				return []; //return empry array if 1 page is enouth
+			}
+
+			const pagesCount = Math.ceil(res.Paging.count / countersPageSize);
+			const pageNumbers = Array.from(Array(pagesCount).keys());
+
+			console.log(pageNumbers);
+
+			return getChunkPromises(pageNumbers, 10, (pages) => {
+				console.log(pages);
+				return pages
+				.filter( page => page > 0) //filter out first page
+				.map( page => API.getCoutersFromDBdesc(label, page + 1,  countersPageSize) );
+			});
+
+		})
+		.then( results => {
+
+			counters = results.reduce( (prev, res) => {
+				return [...prev, ...res.Counters];
+			}, []);
+
+			counters = [...firstPageCounters, ...counters];
+
+			const userIds = photos.Keys.map( key => key.UserId);
+
+			return API.getUsers([...new Set(userIds)]);
+		})
+		.then( (res) => {			
+
+			const users = res;
+
+			photos.Keys = photos.Keys.map( key => {
+				key.counter = false;
+				key.user = false;
+
+				counters.map( counter => {
+					if (parseInt(counter.Name) === key.Id){
+						key.counter = counter;
+					}
+				});
+
+				users.map( user => {
+					if (parseInt(user.id) === key.UserId){
+						key.user = user;
+					}
+				});
+
+				try {
+					key.Value = JSON.parse(HTMLdecode(key.Value));					
+				}catch(e){
+					console.error(e, key.Id);
+
+					key.Value = false;
+				}	
+
+				return key;			
+				
+			});
+
+			dispatch(galleryActions.addItems({photos: photos}));
+
+		})
+		.then( () => {			
+			dispatch(loadingActions.loadingHide());
+		})
+		.catch( err => { 
+			dispatch(loadingActions.loadingHide());
+
+			dispatch(catchError(err)); 
+		});
+	}
+}
+
+
+export function deleteFromDB(key) {
+
+	return (dispatch, getState) => {
+
+		const roles = getState().user.profile.roles;
+
+		if (roles.indexOf('System') === -1){
+			return false;
+		}
+
+		if (!confirm('Уверены что хотите удалить эту запись?')){
+			return false;
+		}
+
+		dispatch(loadingActions.loadingShow());	
+
+		return API.deleteKeyFromDB(key)
+		.then( (res) => {	
+			console.log(res);
+			dispatch(loadingActions.loadingHide());
+
+			if (res.type !== 'systemForbidden'){
+				//dispatch(getComments());
+			}
+		})
+		.catch( err => { 
+			dispatch(loadingActions.loadingHide());
+
+			dispatch(catchError(err)); 
+		});
+	}
+}
+
+export function vote(keyId) {
+
+	return (dispatch, getState) => {
+		dispatch(loadingActions.loadingShow());	
+		
+		const label = PromoOptions.galeryLabel;
+
+		return API.voteForCounterFromDB(keyId, label)
+		.then( (res) => {	
+			console.log(res);
+			dispatch(loadingActions.loadingHide());
+
+			if (res.type !== 'systemForbidden'){
+				//dispatch(getComments());
+				return 'ok';
+			}
+		})
+		.catch( err => { 
+			dispatch(loadingActions.loadingHide());
+
+			dispatch(catchError(err)); 
+		});
+	}
+}
+
+//upload
+
+
+export function uploadPhoto(base64) {
+
+	let fileName = 'fileName';
+
+	switch(true){
+		case (base64.indexOf('image/png') > -1):
+			base64 = base64.replace(/data:image\/png;base64,/, '');
+			fileName += '.png';
+			break;
+		case (base64.indexOf('image/jpg') > -1):
+			base64 = base64.replace(/data:image\/jpg;base64,/, '');
+			fileName += '.jpg';
+			break;
+		case (base64.indexOf('image/jpeg') > -1):
+			base64 = base64.replace(/data:image\/jpeg;base64,/, '');
+			fileName += '.jpeg';
+			break;
+		case (base64.indexOf('image/gif') > -1):
+			base64 = base64.replace(/data:image\/gif;base64,/, '');
+			fileName += '.gif';
+			break;
+	}	
+
+	const file = {
+		fileName: fileName,
+		base64: base64,
+	};
+
+	return (dispatch, getState) => {
+
+		dispatch(loadingActions.loadingShow());	
+
+		return API.uploadImageToDB(file.base64, file.fileName)
+		.then( taskId => {
+
+			console.log(taskId);	
+
+			return new Promise( (resolve, reject) =>{
+				
+				const interval = setInterval( ()=> {
+					
+					API.checkUpload(taskId)
+					.then( res => {
+						console.log(res);
+
+						clearInterval(interval);
+
+						resolve(res);
+
+					})
+					.catch( err => {
+						console.log(err);
+					});
+
+				}, 2000);
+
+			});
+
+		})
+		.then( (fileData) => {
+
+			console.log(fileData);
+
+			const data = {
+				label: PromoOptions.galeryLabel,
+				key: 'gallery-' + new Date().getTime(),
+				value: HTMLencode(JSON.stringify(fileData)),
+				permissionLevel: 'Public',
+			}
+
+			console.log(data);
+
+			return API.addKeyToDB(data);
+		})
+		.then( res => {
+			
+			dispatch(loadingActions.loadingHide());
+
+			console.log(res);
+
+			return 'ok';
+
+		})
+		.catch( err => {
+			dispatch(loadingActions.loadingHide());
+
+			dispatch(catchError(err)); 
+
+			return 'err';
+		});	
+	}
+}
 
 
 // authorisation

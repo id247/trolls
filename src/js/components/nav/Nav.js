@@ -12,6 +12,10 @@ const pages = [
 		id: '/stickers',
 		title: 'Стикеры',
 	},
+	{
+		id: '/gallery',
+		title: 'Галерея',
+	},
 ];
 
 class Nav extends React.Component {
@@ -29,6 +33,8 @@ class Nav extends React.Component {
 	render(){
 		const { props } = this;
 
+		console.log(props.params.pageId);
+
 		const currentPage = '/' + ( props.params.pageId ? props.params.pageId : '' );
 
 		return(
@@ -44,7 +50,7 @@ class Nav extends React.Component {
 							className={'app-nav__href button '
 								+ (page.id === currentPage ? 'app-nav__href--active' : '')
 							}
-							onClick={this._setPageHandler(page.id)}
+							//onClick={this._setPageHandler(page.id)}
 						>
 							{page.title}
 						</a>

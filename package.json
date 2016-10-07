@@ -4,8 +4,7 @@
   "description": "",
   "cdn": "https://ad.csdnevnik.ru/special/staging/trolls/",
   "main": "gulpfile.js",
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "babel-core": "^6.9.0",
     "babel-eslint": "^6.0.0",
@@ -40,6 +39,7 @@
     "gulp-util": "latest",
     "gulp-watch": "latest",
     "gulp.spritesmith": "latest",
+    "html-entities": "^1.2.0",
     "js-cookie": "^2.1.2",
     "react": "^15.3.1",
     "react-dom": "^15.3.1",

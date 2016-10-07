@@ -495,13 +495,13 @@
 	padding: 200px 0 0;
 
 	&__buttons{
-		
+		margin: 0 0 -20px;
 	}
 
 	&__button-placeholder{
 		display: inline-block;
 		vertical-align: middle;
-		margin: 0 10px 0;
+		margin: 0 10px 20px;
 	}
 }
 
@@ -556,6 +556,31 @@
 }
 
 
+/* ==========================================================================
+ * page
+ * ========================================================================== */
+
+.page{
+
+	&__content{
+		margin: 0 auto;
+		max-width: 750px;
+		background: #fff;
+		padding: 15px 15px;
+		border-radius: 7px;	
+		
+	}
+
+	&__title{
+		font-size: 32px;
+		font-family: $futura;
+		margin: 0 0 15px;
+		text-align: center;
+	}	
+
+}
+
+
 
 /* ==========================================================================
  * stickers
@@ -564,31 +589,19 @@
 .stickers{
 
 	&__content{
-		margin: 0 auto;
-		max-width: 750px;
-		background: #fff;
-		padding: 25px 15px;
-		border-radius: 7px;	
-
-		text-align: center;		
-	}
-
-	&__title{
-		font-size: 32px;
-		font-family: $futura;
-		margin: 0 0 30px;
+		text-align: center;
 	}
 
 	&__list{
 		text-align: center;
-		margin: 0 -15px 20px;
+		margin: 0 -15px 0px;
 	}
 	
 	&__item{
 		display: inline-block;
 		vertical-align: top;
 		width: 150px;
-		margin: 0 15px 30px;
+		margin: 0 15px 20px;
 	}
 }
 
@@ -627,6 +640,189 @@
 		height: 100%;
 	}
 }
+
+
+/* ==========================================================================
+ * gallery
+ * ========================================================================== */
+
+.gallery{
+
+	&__content{
+
+	}
+
+	&__title{
+		font-size: 32px;
+		font-family: $futura;
+		margin: 0 0 15px;
+	}
+
+	&__list{
+
+	}
+	
+	&__item{
+		margin: 0 0 50px;
+	}
+}
+
+.gallery-item{
+
+	&__top{
+		@include clearfix;
+		margin: 0 0 20px;
+	}
+
+	&__user{
+		float: left;
+	}
+
+	&__likes{
+		float: right;
+		line-height: 50px;
+	}
+
+	&__admin{
+		margin: 0 0 20px;
+	}
+
+	&__image-placeholder{
+		text-align: center;
+	}
+
+	&__image{
+		max-width: 100%;
+		height: auto;
+	}
+}
+
+/* ==========================================================================
+ * likes
+ * ========================================================================== */
+
+.likes{
+	
+	&--liked{
+
+		.likes__button{
+			cursor: default;
+			color: $blue;
+			&:before{
+				@include sprite($hand-liked);
+			}
+		}
+	}
+
+	&__button{
+		background: transparent;
+		border: 0;
+		position: relative;
+		padding: 0;
+		cursor: pointer;
+		font-size: 14px;
+		color: #999;
+
+		&:before{
+			content: '';
+			@include sprite($hand);
+			display: inline-block;
+			margin: 0 6px -2px 0;
+		}
+	}
+}
+
+
+/* ==========================================================================
+ * pagination
+ * ========================================================================== */
+.pagination{
+
+	&__title{
+		text-align: center;
+		margin: 0 0 20px;
+	}
+
+	&__list{
+		text-align: center;
+		margin: 0 0 -10px;
+	}
+	
+	&__item{
+		display: inline-block;
+		vertical-align: top;
+		margin: 0 5px 10px;
+
+		// a{
+		// 	font-size: 22px;
+		// 	font-weight: 300;
+		// 	color: #fff;
+		// 	background: $blue-light;
+		// 	display: block;
+		// 	padding: 3px;
+		// 	//border: 1px solid $blue-middle;
+
+		// 	&.active{
+		// 		//color: $grey;
+		// 		background: none;
+		// 		color: $blue-middle;
+		// 	}
+
+		// 	&:hover{
+		// 		opacity: .8;
+		// 	}
+		// }
+	}
+
+	&__href{
+		font-size: 22px;
+		font-weight: 300;
+		//border: 1px solid $blue-middle;
+		
+		border-bottom: 1px solid;
+
+		&--active{
+			//color: $grey;
+			border-color: transparent;
+		}
+
+		&:hover{
+			opacity: .8;
+		}
+	}
+}
+
+/* ==========================================================================
+ * user
+ * ========================================================================== */
+
+.user{
+
+	&__avatar-placeholder{
+		width: 50px;
+		height: 50px;
+		border-radius: 50%;
+		display: inline-block;
+		vertical-align: middle;
+		margin: 0 15px 0 0; 
+		overflow: hidden;
+	}
+
+	&__avatar{
+		width: 100%;
+		height: auto;
+	}
+
+	&__content{
+		display: inline-block;
+		vertical-align: middle;		
+	}
+
+	&__name{
+		font-size: 20px;
+	}
+}
+
 
 /* ==========================================================================
  * error-message

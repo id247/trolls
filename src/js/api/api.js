@@ -205,6 +205,37 @@ function voteForCounterFromDB(keyId, label = ''){
 	return Ajax(options);
 }
 
+function uploadImageToDB(base64, fileName){
+	if (!base64){
+		return paramsError('no base64 in API.uploadImageToDB');
+	}
+	if (!fileName){
+		return paramsError('no fileName in API.uploadImageToDB');
+	}
+	const options = {
+		path: 'apps/current/files/async/upload/base64',
+		method: 'post',
+		body: {
+			file: base64,
+			fileName: fileName,
+		},
+	};
+
+	return Ajax(options);
+}
+
+
+function checkUpload(taskId){
+	if (!taskId){
+		return paramsError('no taskId in API.checkUpload');
+	}
+	const options = {
+		path: 'files/async/upload/' + taskId,
+	};
+
+	return Ajax(options);
+}
+
 export default {
 	getUser,
 	getUsers,
@@ -220,6 +251,8 @@ export default {
 	getCoutersFromDB,
 	getCoutersFromDBdesc,
 	voteForCounterFromDB,
+	uploadImageToDB,
+	checkUpload,
 }
 
 

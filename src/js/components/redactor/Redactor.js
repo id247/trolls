@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 
 import { PromoOptions } from 'appSettings';
 
+import * as asyncActions from '../../actions/async';
 
 const masks = {
 	hair: [
@@ -38,6 +39,7 @@ class Redactor extends React.Component {
 			saveLink: false,
 			image: false,
 			maskCategory: false,
+			uploaded: false,
 		};
 	}
 
@@ -50,7 +52,7 @@ class Redactor extends React.Component {
 		//canvas.setBackgroundColor('#cccccc').renderAll();
 
 		canvas.on('object:selected', function(options) {
-			//options.target.bringToFront();
+			options.target.bringToFront();
 		});
 
 		this.setState({
@@ -102,126 +104,8 @@ class Redactor extends React.Component {
 
 			this.state.canvas.add(imgInstance).setActiveObject(imgInstance);
 
-			let elements = this.state.elements;
-
-			elements.push(imgInstance);
-
-			this.setState({elements: elements});
-
 		}
 
-
-	}
-
-	_addSVG(e){
-		e.preventDefault();
-
-		const that = this;
-
-		fabric.loadSVGFromURL(e.target.src, function(objects, options) {
-
-			//console.log(options);
-
-			objects.forEach( (object, i) => {
-
-				console.log(i, object);
-
-				object.set({
-					//left: 960 / 2 - options.width / 2 + object.left,
-					//top: 600 / 2 - options.height / 2 + object.top,
-					//lockMovementX: true,
-					//lockMovementY: true,
-					//lockRotation: true,
-					//lockScalingX: true,
-					//hasControls: false,
-					//borderColor: '#ff0000',
-					//cornerSize: 6,
-					//selectable: (object.height > 400) ? false : true,
-				});
-
-
-
-				//that.state.canvas.add(object);
-
-				if (object.height > 400){
-					that.state.canvas.sendToBack(object)
-				}
-
-			});
-
-			var shape = fabric.util.groupSVGElements(objects, options);
-
-		   //  shape.set({
-			  // left: 960 / 2 - shape.width / 2,
-			  // top: 500 / 2 - shape.height / 2,
-		   //  });
-
-		   //  if (shape.isSameColor && shape.isSameColor() || !shape.paths) {
-		   //    //shape.setFill(colorSet);
-		   //  }
-
-		   //  else if (shape.paths) {
-		   //    for (var i = 0; i < shape.paths.length; i++) {
-		   //      //shape.paths[i].setFill(colorSet);
-		   //      //shape.paths[i].setFill('#fff');
-		   //    }
-		   //  }
-
-			that.state.canvas.add(shape);
-			that.state.canvas.renderAll();
-
-
-		}, (element, object) => {
-			object.fixed = Boolean(element.getAttribute('myfixed'));
-		});
-
-
-	}
-
-	_changeColor(e){
-		e.preventDefault();
-
-		const activeObject = this.state.canvas.getActiveObject() == null ? this.state.canvas.getActiveGroup() : this.state.canvas.getActiveObject()
-
-		activeObject.set({
-			fill: e.target.value
-		})
-
-		 if (activeObject.paths) {
-			  for (var i = 0; i < activeObject.paths.length; i++) {
-				console.log(activeObject.paths[i]);
-				if (!activeObject.paths[i].fixed){
-					activeObject.paths[i].setFill(e.target.value);
-				}
-
-			  }
-			}
-
-		this.state.canvas.renderAll();
-	}
-
-	_delete(e){
-		e.preventDefault();
-		this.state.canvas.getActiveObject().remove();
-	}
-
-
-	_toBack(e){
-		e.preventDefault();
-		this.state.canvas.getActiveObject().sendBackwards();
-	}
-
-	_toFront(e){
-		e.preventDefault();
-		this.state.canvas.getActiveObject().bringForward();
-	}
-
-	_move(e){
-		e.preventDefault();
-
-		const activeObject = this.state.canvas.getActiveObject();
-
-		activeObject && activeObject.animate('left', '+=100', { onChange: this.state.canvas.renderAll() });
 	}
 
 	_save(){
@@ -263,8 +147,6 @@ class Redactor extends React.Component {
 				opacity: 1.0,
 				selectable: false,
 			});
-
-			console.log(imgInstance);
 
 			imgInstance.scaleToWidth(state.canvas.getWidth());
 
@@ -329,7 +211,31 @@ class Redactor extends React.Component {
 			...this.state,
 			...{
 				saveLink: false,
+				uploaded: false,
 			}
+		});
+	}
+
+	_uploadPhoto(){
+
+		if (!this.state.saveLink){
+			return false;
+		}
+
+		this.props.uploadPhoto( this.state.saveLink )
+		.then( (res) => {
+
+			if (res === 'ok'){
+
+				this.setState({
+					...this.state,
+					...{
+						uploaded: true,
+					}
+				});
+
+			}
+
 		});
 	}
 
@@ -377,6 +283,12 @@ class Redactor extends React.Component {
 		e.preventDefault;
 
 		this._cancelSave();
+	}
+
+	_uploadPhotoHandler = () => (e) => {
+		e.preventDefault;
+
+		this._uploadPhoto();
 	}
 
 	render() {
@@ -491,7 +403,9 @@ class Redactor extends React.Component {
 							style={{display: state.saveLink ? 'block' : 'none'}}
 						>
 							
-							<div className="redactor-save__buttons">
+							<div className="redactor-save__buttons"
+								style={{display: !state.uploaded ? 'block' : 'none'}}
+							>
 
 								<div className="redactor-save__button-placeholder">
 
@@ -506,7 +420,10 @@ class Redactor extends React.Component {
 
 								<div className="redactor-save__button-placeholder">
 
-									<button className="redactor-save__href button button--blue button--l">
+									<button 
+										className="redactor-save__href button button--blue button--l"
+										onClick={this._uploadPhotoHandler()}
+									>
 										Отправить на конкурс
 									</button>
 
@@ -519,6 +436,32 @@ class Redactor extends React.Component {
 										onClick={this._cancelSaveHandler()}
 									>
 										Отмена
+									</button>
+
+								</div>
+
+							</div>
+
+							<div className="redactor-save__buttons"
+								style={{display: state.uploaded ? 'block' : 'none'}}
+							>
+
+								<div className="redactor-save__button-placeholder">
+
+									<a 	href="#/gallery" 
+										className="redactor-save__href button button--blue button--l">
+										Перейти в галлерею
+									</a>
+
+								</div>
+
+								<div className="redactor-save__button-placeholder">
+
+									<button 
+										className="redactor-save__href button button--blue button--l"
+										onClick={this._cancelSaveHandler()}
+									>
+										Продолжить редактирование
 									</button>
 
 								</div>
@@ -586,7 +529,7 @@ const mapStateToProps = (state, ownProps) => ({
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-	//login: () => dispatch(asyncActions.login()),
+	uploadPhoto: (base64) => dispatch(asyncActions.uploadPhoto(base64)),
 	//init: () => dispatch(asyncActions.init()),
 	//redirect: (page) => dispatch(pageActions.setPageWithoutHistory(page)),
 });

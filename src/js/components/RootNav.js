@@ -7,8 +7,7 @@ import Nav 		from '../components/nav/Nav';
 
 const routes = (
 	<Router history={hashHistory}>
-		<Route path="/" component={Nav} />
-		<Route path="/:pageId" component={Nav} />
+		<Route path="/(:pageId)(/**)" component={Nav} />
 	</Router>
 );
 
