@@ -36,6 +36,13 @@ export function catchError(err){
 
 		}
 
+		if (err.description.type === 'outOfAuthScope'){
+			console.error('outOfAuthScope');
+			dispatch(logout());
+			dispatch(login());
+			return;
+		}
+
 		console.error(errorStart + ' ' + description);
 
 		switch (err.message){
@@ -396,7 +403,7 @@ export function login() {
 		
 		return OAuth.login()
 		.then( () => {
-			
+
 			return API.getUser()			
 			.then( (user) => {	
 				dispatch(userActions.userSet(user));			

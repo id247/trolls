@@ -28,11 +28,9 @@ class Stickers extends React.Component {
 		const { state, props } = this;
 
 		props.getFriends()
-		.then( ()=> {
+		.then( ()=> {			
 
-			console.log(props.friends);
-
-			if (!props.friends || props.friends.length === 0){
+			if (!props.friends){
 				return;
 			}
 
@@ -55,7 +53,6 @@ class Stickers extends React.Component {
 			.then( () => {
 				this._getFriends();
 			});
-
 			return;
 		}
 		
@@ -107,8 +104,6 @@ class Stickers extends React.Component {
 	_sendSticker(friendId){
 
 		const { state, props } = this;
-
-		console.log(state.stickerId, friendId);
 
 		props.sendSticker(state.stickerId, friendId)
 		.then( (res) => {
