@@ -24,18 +24,42 @@ class Stickers extends React.Component {
 
 	}
 
+	_getFriends(){
+		const { state, props } = this;
+
+		props.getFriends()
+		.then( ()=> {
+
+			console.log(props.friends);
+
+			if (!props.friends || props.friends.length === 0){
+				return;
+			}
+
+			this.setState({
+				...state,
+				...{
+					showFriends: true,
+				}
+			});
+
+		});
+	}
+
 	_showFriends(){
 
 		const { state, props } = this;
 
-		this.props.getFriends();
+		if (!props.profile){
+			props.login()
+			.then( () => {
+				this._getFriends();
+			});
 
-		this.setState({
-			...this.state,
-			...{
-				showFriends: true,
-			}
-		});
+			return;
+		}
+		
+		this._getFriends();
 	}
 
 	_hideFriends(){
@@ -270,8 +294,6 @@ class Stickers extends React.Component {
 					)
 				}
 
-
-
 			</div>
 		);
 	}
@@ -280,6 +302,7 @@ class Stickers extends React.Component {
 
 
 const mapStateToProps = (state, ownProps) => ({
+	profile: state.user.profile,
 	friends: state.user.friends,
 	results: state.results,
 });
@@ -287,7 +310,7 @@ const mapStateToProps = (state, ownProps) => ({
 const mapDispatchToProps = (dispatch, ownProps) => ({
 	sendSticker: (friendId, stickerId) => dispatch(asyncActions.sendSticker(friendId, stickerId)),
 	getFriends: () => dispatch(asyncActions.getFriends()),
-	setPage: (page) => dispatch(pageActions.setPage(page)),
+	login: () => dispatch(asyncActions.login()),
 });
 
 Stickers.propTypes = {

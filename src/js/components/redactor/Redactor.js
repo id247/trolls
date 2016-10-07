@@ -35,7 +35,6 @@ class Redactor extends React.Component {
 
 		this.state = {
 			canvas: false,
-			elements: [],
 			saveLink: false,
 			image: false,
 			maskCategory: false,
@@ -216,13 +215,10 @@ class Redactor extends React.Component {
 		});
 	}
 
-	_uploadPhoto(){
+	_sendPhoto(){
+		const { props, state } = this;
 
-		if (!this.state.saveLink){
-			return false;
-		}
-
-		this.props.uploadPhoto( this.state.saveLink )
+		props.uploadPhoto( this.state.saveLink )
 		.then( (res) => {
 
 			if (res === 'ok'){
@@ -237,6 +233,28 @@ class Redactor extends React.Component {
 			}
 
 		});
+
+	}
+
+	_uploadPhoto(){
+
+		const { props, state } = this;
+
+		if (!state.saveLink){
+			return false;
+		}
+
+		if (!props.profile){
+			
+			props.login()
+			.then( () => {
+				this._sendPhoto();
+			});
+
+			return;
+		}
+
+		this._sendPhoto();
 	}
 
 	_addPhotoHandler = () => (e) => {
@@ -450,7 +468,7 @@ class Redactor extends React.Component {
 
 									<a 	href="#/gallery" 
 										className="redactor-save__href button button--blue button--l">
-										Перейти в галлерею
+										Перейти в галерею
 									</a>
 
 								</div>
@@ -530,6 +548,7 @@ const mapStateToProps = (state, ownProps) => ({
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
 	uploadPhoto: (base64) => dispatch(asyncActions.uploadPhoto(base64)),
+	login: () => dispatch(asyncActions.login()),
 	//init: () => dispatch(asyncActions.init()),
 	//redirect: (page) => dispatch(pageActions.setPageWithoutHistory(page)),
 });

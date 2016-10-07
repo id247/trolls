@@ -1,5 +1,5 @@
 export const OAuthOptions = {
-	provider: 'app',
+	provider: 'dnevnikTrolls',
 	authUrl: 'https://login.dnevnik.ru/oauth2',
 	grantUrl: 'https://api.dnevnik.ru/v1/authorizations',
 	scope: 'Avatar,FullName,Birthday,Age,Roles,Files,Sex',	
@@ -15,15 +15,8 @@ export const PromoOptions = {
 	cdn: 'https://ad.csdnevnik.ru/special/staging/trolls/',
 	url: 'https://ad.dnenvik.ru/promo/wishlist3',
 	server: 'https://dnevnik.ru',
+	galeryLabel: 'gallery', 
+	pageSize: 10, 
 }
 
-export const ForumOptions = {	
-	pageSize: 15,
-	psyhoId: '1000005449055',
-	anonAvatar: 'https://static.dnevnik.ru/images/avatars/user/a.m.jpg',
-	postsLabel: {
-		mothers: 'forum-mothers',
-		girls: 'forum-girls',
-		competition: 'competition-mothers',
-	},
-}
+

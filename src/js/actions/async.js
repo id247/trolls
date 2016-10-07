@@ -70,14 +70,9 @@ export function getFriends() {
 
 		console.log(getState().user.profile);
 
-		if (!getState().user.profile){
-			dispatch(actionAfterLogin(getInitialData));	
-			return;
-		}
-
 		dispatch(loadingActions.loadingShow());	
 		
-		API.getUserFriendsIds()
+		return API.getUserFriendsIds()
 		.then( friendsIds => {
 
 			dispatch(userActions.userFriendsIdsSet(friendsIds));
@@ -401,31 +396,22 @@ export function login() {
 		
 		return OAuth.login()
 		.then( () => {
-			dispatch(loadingActions.loadingHide());	
+			
+			return API.getUser()			
+			.then( (user) => {	
+				dispatch(userActions.userSet(user));			
+			})
+			.catch( err => { 
+				dispatch(catchError(err)); 
+			})
+			.then( () => {	
+				dispatch(loadingActions.loadingHide());				
+			});
 
-			dispatch(pageActions.setPageWithoutHistory('/'));
 		},(err) => {
 			dispatch(loadingActions.loadingHide());	
-
 			//dispatch(catchError(err));
-		});
-	}
-}
-
-export function actionAfterLogin( callback ) {
-	return dispatch => {
-		dispatch(loadingActions.loadingShow());
-		
-		return OAuth.login()
-		.then( () => {
-			dispatch(loadingActions.loadingHide());	
-
-			dispatch(callback());
-		},(err) => {
-			dispatch(loadingActions.loadingHide());	
-
-			//dispatch(catchError(err));
-		});
+		})
 	}
 }
 
@@ -452,7 +438,6 @@ export function getInitialData() {
 
 			dispatch(userActions.userSet(user));
 			
-			dispatch(getFriends());
 			//dispatch(pageActions.setPageWithoutHistory('/'));
 		})
 		.catch( err => { 
