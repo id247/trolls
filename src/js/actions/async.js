@@ -1,7 +1,7 @@
 import API from '../api/api';
 import OAuth from '../api/hello';
 
-import { ForumOptions } from 'appSettings';
+import { PromoOptions } from 'appSettings';
 
 import * as visual from '../helpers/visual.js';
 
@@ -56,6 +56,84 @@ export function catchError(err){
 	}
 }
 
+
+//friends
+//
+
+
+
+export function getFriends() {
+	return (dispatch, getState) => {
+
+		console.log(getState().user.profile);
+
+		if (!getState().user.profile){
+			dispatch(actionAfterLogin(getInitialData));	
+			return;
+		}
+
+		dispatch(loadingActions.loadingShow());	
+		
+		API.getUserFriendsIds()
+		.then( friendsIds => {
+
+			dispatch(userActions.userFriendsIdsSet(friendsIds));
+			return API.getUsers(friendsIds);
+		})
+		.then( friends => {
+			dispatch(loadingActions.loadingHide());
+			dispatch(userActions.userFriendsSet(friends));
+		})
+		.catch( err => { 
+			dispatch(loadingActions.loadingHide());
+
+			dispatch(catchError(err)); 
+		});
+	}
+}
+
+
+//stockers
+
+
+export function sendSticker(stickerId, friendId) {
+	return dispatch => {
+
+		if (!stickerId || !friendId){
+			return false;
+		}
+
+		dispatch(loadingActions.loadingShow());	
+
+		const badge = {
+			imageUrl: PromoOptions.cdn + 'images/stickers/' + stickerId + '.png',
+			redirectUrl: PromoOptions.url,
+			//text: 'Подпись',
+		}
+		
+		return API.postStickerToWall(friendId, badge)
+		.then( res => {
+
+			dispatch(loadingActions.loadingHide());
+			console.log(res);
+
+			if (res === 'ok'){
+				//dispatch(resultsActions.addFriendId(friendId));
+				//dispatch(sendResultsToDB());
+			}
+
+			return res;
+		})
+		.catch( err => { 
+			dispatch(loadingActions.loadingHide());
+
+			dispatch(catchError(err)); 
+		});
+	}
+}
+
+
+
 // authorisation
 
 export function login() {
@@ -75,12 +153,29 @@ export function login() {
 	}
 }
 
+export function actionAfterLogin( callback ) {
+	return dispatch => {
+		dispatch(loadingActions.loadingShow());
+		
+		return OAuth.login()
+		.then( () => {
+			dispatch(loadingActions.loadingHide());	
+
+			dispatch(callback());
+		},(err) => {
+			dispatch(loadingActions.loadingHide());	
+
+			//dispatch(catchError(err));
+		});
+	}
+}
+
 
 export function logout() {
 	return dispatch => {
 		OAuth.logout();
 		dispatch(userActions.userUnset());
-		dispatch(pageActions.setPageWithoutHistory('/login'));
+		//dispatch(pageActions.setPageWithoutHistory('/login'));
 	}
 }
 
@@ -97,12 +192,14 @@ export function getInitialData() {
 			dispatch(loadingActions.loadingHide());
 
 			dispatch(userActions.userSet(user));
-			dispatch(pageActions.setPageWithoutHistory('/'));
+			
+			dispatch(getFriends());
+			//dispatch(pageActions.setPageWithoutHistory('/'));
 		})
 		.catch( err => { 
 			dispatch(loadingActions.loadingHide());
 
-			dispatch(pageActions.setPageWithoutHistory('/login'));
+			//dispatch(pageActions.setPageWithoutHistory('/login'));
 			dispatch(catchError(err)); 
 		})
 		.then( () => {			

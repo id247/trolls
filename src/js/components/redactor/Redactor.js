@@ -97,6 +97,7 @@ class Redactor extends React.Component {
 				transparentCorners: false,
 				borderColor: 'red',
 				cornerColor: 'red',
+				cornerSize: 10,
 			});
 
 			this.state.canvas.add(imgInstance).setActiveObject(imgInstance);
@@ -383,9 +384,58 @@ class Redactor extends React.Component {
 		const { props, state } = this;
 
 		return (
-			<div className={( (props.mixClass ? props.mixClass : '') + ' redactor')}>
+			<div className="redactor">
 
 				<div className="redactor__content">
+
+					<div 
+						className={
+							'redactor__sidebar redactor-sidebar ' 
+							+ ( state.image ? 'redactor__sidebar--visible' : '' )
+						}
+					>
+
+						<ul className="redactor-sidebar__list">
+
+							<li className="redactor-sidebar__item">
+
+								<button
+									className={
+										'redactor-sidebar__button redactor-sidebar__button--hair button'
+
+									}
+									onClick={this._setMaskCateroryHandler('hair')}
+								>
+									Прически
+								</button>
+
+							</li>
+
+							<li className="redactor-sidebar__item">
+
+								<button
+									className="redactor-sidebar__button redactor-sidebar__button--noses button"
+									onClick={this._setMaskCateroryHandler('noses')}
+								>
+									Носы
+								</button>
+
+							</li>
+
+							<li className="redactor-sidebar__item">
+
+								<button
+									className="redactor-sidebar__button redactor-sidebar__button--save button"
+									onClick={this._saveHandler()}
+								>
+									Сохранить
+								</button>
+
+							</li>
+
+						</ul>
+
+					</div>
 
 					<div className="redactor__work-area redactor-work-area">
 
@@ -427,7 +477,8 @@ class Redactor extends React.Component {
 							<canvas
 								className="redactor-work-area__canvas"
 								ref="canvas"
-								width="830" height="450"
+								width="730" 
+								height="450"
 							></canvas>
 
 							<button className="redactor-work-area__delete button"
@@ -479,50 +530,6 @@ class Redactor extends React.Component {
 							></button>
 
 						</div>
-
-					</div>
-
-					<div className="redactor__sidebar redactor-sidebar">
-
-						<ul className="redactor-sidebar__list">
-
-							<li className="redactor-sidebar__item">
-
-								<button
-									className={
-										'redactor-sidebar__button redactor-sidebar__button--hair button'
-
-									}
-									onClick={this._setMaskCateroryHandler('hair')}
-								>
-									Прически
-								</button>
-
-							</li>
-
-							<li className="redactor-sidebar__item">
-
-								<button
-									className="redactor-sidebar__button redactor-sidebar__button--noses button"
-									onClick={this._setMaskCateroryHandler('noses')}
-								>
-									Носы
-								</button>
-
-							</li>
-
-							<li className="redactor-sidebar__item">
-
-								<button
-									className="redactor-sidebar__button redactor-sidebar__button--save button"
-									onClick={this._saveHandler()}
-								>
-									Сохранить
-								</button>
-
-							</li>
-
-						</ul>
 
 					</div>
 

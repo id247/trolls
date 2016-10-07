@@ -71,6 +71,7 @@ function sendInvites(data){
 	return Ajax(options);
 }
 
+
 function postToWall(userId, data){
 	if (!userId){
 		return paramsError('no userId in API.postToWall');
@@ -83,6 +84,23 @@ function postToWall(userId, data){
 		path: 'users/' + userId + '/wall-items',
 		method: 'put',
 		body: data,
+	};
+
+	return Ajax(options);
+}
+
+function postStickerToWall(userId, badge){
+	if (!userId){
+		return paramsError('no userId in API.postStickerToWall');
+	}
+	if (!badge){
+		return paramsError('no badge in API.postStickerToWall');
+	}
+
+	const options = {
+		path: 'users/' + userId + '/wall/badge', 
+		method: 'post',
+		body:  badge,
 	};
 
 	return Ajax(options);
@@ -191,7 +209,9 @@ export default {
 	getUser,
 	getUsers,
 	sendInvites,
+	getUserFriendsIds,
 	postToWall,
+	postStickerToWall,
 	addKeyToDB,
 	deleteKeyFromDB,
 	getKeyFromDB,

@@ -1,6 +1,6 @@
 import * as actions from '../actions/page';
 
-export function page(state = false, action) {
+export function page(state = '/', action) {
 	switch (action.type) {
 		case actions.PAGE_SET:
 			return action.payload;

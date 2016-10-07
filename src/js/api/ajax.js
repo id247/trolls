@@ -57,6 +57,8 @@ function selectResponse(response){
 				}	
 				return text;
 			});
+		case 204: 
+			return 'ok';
 		default:	
 			return response.text()
 			.then(text => {				

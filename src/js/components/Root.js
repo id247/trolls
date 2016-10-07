@@ -6,14 +6,16 @@ import Loading 		from '../components/loading/Loading';
 import ErrorMessage from '../components/error/ErrorMessage';
 import Login 		from '../components/pages/Login';
 import App 			from '../components/App';
-import Main 		from '../components/pages/Main';
+import Redactor 	from '../components/redactor/Redactor';
+import Stickers 	from '../components/stickers/Stickers';
 
 const routes = (
 	<Router history={hashHistory}>
 		<Route path="/" component={App}>
-			<IndexRoute component={Main} />
+			<IndexRoute component={Redactor} />
+			<Route path="/stickers" component={Stickers} />
 		</Route>
-		<Route path="/login" component={Login} />
+		{/*<Route path="/login" component={Login} /> */}
 	</Router>
 );
 
