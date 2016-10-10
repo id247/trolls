@@ -22,6 +22,12 @@ export function catchError(err){
 		let errorStart = 'Ошибка ' + err.message + ':';
 		let errorEnd = 'Попробуйте обновить страницу.';
 
+		//kind of bigfix for ie10 bug with 401 statuses
+		if (err.message === 'Network request failed' && !err.description){
+			dispatch(logout());
+			return;
+		}
+
 		if (!err.description) {
 			console.error(errorStart + ' ' + err);			
 			dispatch(errorActions.setError(errorStart + err + errorEnd));
@@ -44,6 +50,7 @@ export function catchError(err){
 		}
 
 		console.error(errorStart + ' ' + description);
+		console.error('err.message' + err.message);
 
 		switch (err.message){
 			case 401:					

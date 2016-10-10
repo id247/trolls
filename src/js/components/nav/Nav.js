@@ -33,7 +33,7 @@ class Nav extends React.Component {
 	render(){
 		const { props } = this;
 
-		console.log(props.params.pageId);
+		//console.log(props.params.pageId);
 
 		const currentPage = '/' + ( props.params.pageId ? props.params.pageId : '' );
 

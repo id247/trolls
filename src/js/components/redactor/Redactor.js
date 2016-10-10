@@ -299,10 +299,9 @@ class Redactor extends React.Component {
 	}
 
 	_addPhotoHandler = () => (e) => {
-		//e.preventDefault;
-		//
 		
 		if (!e.target.value.length === 0){
+			e.preventDefault();
 			return;
 		}
 
@@ -442,16 +441,17 @@ class Redactor extends React.Component {
 							</div>
 
 							<div className="redactor-work-area__button-placeholder">
+								<input type="file"
+									id="imageFileInput"
+									onChange={this._addPhotoHandler()}
+									className="redactor-work-area__file"
+									value={state.imageInput}
+								/>
 
 								<label
+									htmlFor="imageFileInput"
 									className="redactor-work-area__button button button--blue button--l"
-									//onChange={this._addPhotoClickHandler()}
 								>
-									<input type="file"
-										onChange={this._addPhotoHandler()}
-										className="redactor-work-area__file"
-										value={state.imageInput}
-									/>
 									Загрузить фото
 								</label>
 

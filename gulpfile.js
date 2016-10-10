@@ -34,7 +34,7 @@ gulp.task('sass', function () {
 		})) 
 		.on('error', $.notify.onError())
 		.pipe($.autoprefixer({
-			browsers: ['> 1%'],
+			browsers: ['ie 10-11', '> 1%'],
 			cascade: false
 		}))
 		.pipe($.cssImageDimensions())
