@@ -20,11 +20,12 @@ const masks = {
 		4,
 		5,
 	],
-	face: [
+	mouths: [
 		1,
 		2,
 		3,
 		4,
+		5,
 	],
 }
 
@@ -37,6 +38,7 @@ class Redactor extends React.Component {
 			canvas: false,
 			saveLink: false,
 			image: false,
+			imageInput: '',
 			maskCategory: false,
 			uploaded: false,
 		};
@@ -48,7 +50,7 @@ class Redactor extends React.Component {
 		//this.refs.canvas.width = '860px';//this.refs.canvasPlaceholder.width;
 
 		let canvas = new fabric.Canvas(this.refs.canvas);
-		//canvas.setBackgroundColor('#cccccc').renderAll();
+		canvas.setBackgroundColor('#ffffff').renderAll();
 
 		canvas.on('object:selected', function(options) {
 			options.target.bringToFront();
@@ -118,7 +120,8 @@ class Redactor extends React.Component {
 	}
 
 	_addPhoto(input){
-		//console.log(input);
+		console.log(input);
+		console.log(input.value);
 
 		const { state, refs } = this;
 
@@ -147,11 +150,34 @@ class Redactor extends React.Component {
 				selectable: false,
 			});
 
-			imgInstance.scaleToWidth(state.canvas.getWidth());
+			const canvasWidth = state.canvas.getWidth();
+			const canvasHeight = state.canvas.getHeight();
 
-			if (imgInstance.scaleY){
+			console.log(imgInstance.width / imgInstance.height);
+			console.log(canvasWidth / canvasHeight);
 
-				imgInstance.top = - (imgInstance.height * imgInstance.scaleY - state.canvas.getHeight()) / 2;
+			if (imgInstance.width / imgInstance.height > 1){
+
+				console.log(1);
+
+				imgInstance.scaleToWidth(canvasWidth);
+
+				if (imgInstance.scaleY){
+
+					imgInstance.top = - (imgInstance.height * imgInstance.scaleY - canvasHeight) / 2;
+				}
+
+			}else{
+
+				console.log(2);
+
+				imgInstance.scaleToHeight(canvasHeight);
+
+				if (imgInstance.scaleX){
+
+					imgInstance.left = - (imgInstance.width * imgInstance.scaleX - canvasWidth) / 2;
+				}
+
 			}
 
 			state.canvas.add(imgInstance);
@@ -160,6 +186,7 @@ class Redactor extends React.Component {
 				...state,
 				...{
 					image: true,
+					imageInput: input.value,
 				}
 			});
 
@@ -169,12 +196,24 @@ class Redactor extends React.Component {
 
 	}
 
-	_deletePhoto(maskCategory){
+	_emptyCanvas(canvas){
+		const width = canvas.getWidth() + 10;
+		const height = canvas.getHeight() + 10;
+
+		const rect = new fabric.Rect({ top: -5, left: -5, width: width, height: height, fill: '#ffffff' });
+
+		canvas.add(rect).renderAll();
+	}
+
+	_deletePhoto(){
+
+		this._emptyCanvas(this.state.canvas);
 
 		this.setState({
 			...this.state,
 			...{
 				image: false,
+				imageInput: '',
 			}
 		});
 	}
@@ -182,14 +221,16 @@ class Redactor extends React.Component {
 
 	_setMaskCaterory(maskCategory){
 
-		if (!this.state.image){
+		const { state } = this;
+
+		if (!state.image){
 			return false;
 		}
 
 		this.setState({
-			...this.state,
+			...state,
 			...{
-				maskCategory: maskCategory,
+				maskCategory: state.maskCategory !== maskCategory ? maskCategory : false,
 			}
 		});
 	}
@@ -259,6 +300,11 @@ class Redactor extends React.Component {
 
 	_addPhotoHandler = () => (e) => {
 		//e.preventDefault;
+		//
+		
+		if (!e.target.value.length === 0){
+			return;
+		}
 
 		this._addPhoto(e.target);
 	}
@@ -352,6 +398,18 @@ class Redactor extends React.Component {
 
 							</li>
 
+
+							<li className="redactor-sidebar__item">
+
+								<button
+									className="redactor-sidebar__button redactor-sidebar__button--mouths button"
+									onClick={this._setMaskCateroryHandler('mouths')}
+								>
+									Рты
+								</button>
+
+							</li>
+
 							<li className="redactor-sidebar__item">
 
 								<button
@@ -392,6 +450,7 @@ class Redactor extends React.Component {
 									<input type="file"
 										onChange={this._addPhotoHandler()}
 										className="redactor-work-area__file"
+										value={state.imageInput}
 									/>
 									Загрузить фото
 								</label>
@@ -442,7 +501,7 @@ class Redactor extends React.Component {
 										className="redactor-save__href button button--blue button--l"
 										onClick={this._uploadPhotoHandler()}
 									>
-										Отправить на конкурс
+										Сохранить в галлерею
 									</button>
 
 								</div>
