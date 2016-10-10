@@ -64,7 +64,7 @@ class Gallery extends React.Component {
 		
 		this.props.vote(photoId)
 		.then( (res) => {
-			this._showPhotos();
+			this._getPhotos();
 		});	
 	}
 
@@ -73,7 +73,7 @@ class Gallery extends React.Component {
 		
 		this.props.deletePhoto(photoKey)
 		.then( (res) => {
-			this._showPhotos();
+			this._getPhotos();
 		});	
 	}
 

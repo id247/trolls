@@ -501,7 +501,7 @@ class Redactor extends React.Component {
 										className="redactor-save__href button button--blue button--l"
 										onClick={this._uploadPhotoHandler()}
 									>
-										Сохранить в галлерею
+										Сохранить в галерею
 									</button>
 
 								</div>

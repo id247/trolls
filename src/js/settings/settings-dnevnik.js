@@ -13,7 +13,7 @@ export const APIoptions = {
 
 export const PromoOptions = {	
 	cdn: 'https://ad.csdnevnik.ru/special/staging/trolls/',
-	url: 'https://ad.dnenvik.ru/promo/trolls',
+	url: 'https://ad.dnevnik.ru/promo/trolls',
 	server: 'https://dnevnik.ru',
 	galeryLabel: 'gallery', 
 	pageSize: 10, 
