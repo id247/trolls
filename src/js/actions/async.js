@@ -74,6 +74,70 @@ export function catchError(err){
 }
 
 
+//chunk arrays and send in to getPromisesFunc function wich returns a Promise or array of Promises
+function getChunkPromises(items, chunkLength = 10, getPromisesFunc){
+
+	function isIterable(obj) {
+		// checks for null and undefined
+		if (obj == null) {
+		return false;
+		}
+		return typeof obj[Symbol.iterator] === 'function';
+	}
+
+	function flatArrays(arrays){
+		return [].concat.apply([], arrays);
+	}
+
+	function getChunks(items, chunkLength = 10){
+
+		const chunks = [];
+
+		for (let i = 0; i < items.length ; i+=chunkLength){
+			chunks.push(items.slice(i,i+chunkLength));
+		}
+
+		return chunks;
+	}
+
+	return new Promise( (resolve, reject) => {
+
+		let count = 0;
+		const results = [];
+		const itemsChunks = getChunks(items, chunkLength);
+
+		itemsChunks.map( itemsChunk => {
+			count++;
+
+			setTimeout(() => {
+
+				let promises = getPromisesFunc(itemsChunk); 
+
+				console.log('send chunk');
+
+				//in single Promise - push in to array for Promise.all
+				if (!isIterable(promises)){
+					promises = [promises];
+				}
+
+				Promise.all(promises)
+				.then( values => {
+					results.push(values);
+
+					if (results.length === count){
+						resolve( flatArrays(results) );
+					}
+				})
+				.catch( err => {
+					reject( err );
+				});
+
+
+			}, count*500);
+		});
+	});
+}
+
 //friends
 //
 
